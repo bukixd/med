@@ -15,12 +15,12 @@ if($q && $q->execute()) {
         $q = $db->prepare("SELECT * FROM wizyta WHERE staff_id = ?");
         $q->bind_param("i", $staffId);
         if($q && $q->execute()) {
-            $wizytas = $q->get_result();
-            while($wizyta = $wizytas->fetch_assoc()) {
+            $wizyty = $q->get_result();
+            while($wizyta = $wizyty->fetch_assoc()) {
                 $wizytaId = $wizyta['id'];
                 $wizytaDate = $wizyta['date'];
                 $wizytatimestamp = strtotime($wizytaDate);
-                echo "<button>";
+                echo "<a href=\"wizyta.php?id=$wizytaId\" style=\"margin:10px; display:block\">";
                 echo date("j.m H:i", $wizytatimestamp);
                 echo "</button>";
             }
