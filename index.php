@@ -3,15 +3,31 @@
 $db = new mysqli("localhost", "root", "", "med");
 
 $q = $db->prepare("SELECT * FROM staff");
-if($q->execute()) {
+if($q && $q->execute()) {
     //jezeli dziala
     $result = $q->get_result();
-    while($row = $result->fetch_assoc()) {
+    while($staff = $result->fetch_assoc()) {
         //lot?
-        $id = $row['id'];
-        $firstName = $row['firstName'];
-        $lastName = $row['lastName'];
+        $staffId = $staff['id'];
+        $firstName = $staff['firstName'];
+        $lastName = $staff['lastName'];
         echo "Lekarz $firstName $lastName<br>";
+        $q = $db->prepare("SELECT * FROM wizyta WHERE staff_id = ?");
+        $q->bind_param("i", $staffId);
+        if($q && $q->execute()) {
+            $wizytas = $q->get_result();
+            while($wizyta = $wizytas->fetch_assoc()) {
+                $wizytaId = $wizyta['id'];
+                $wizytaDate = $wizyta['date'];
+                $wizytatimestamp = strtotime($wizytaDate);
+                echo "<button>";
+                echo date("j.m H:i", $wizytatimestamp);
+                echo "</button>";
+            }
+            echo "<br>";
+        } else {
+            die("Nie ladzia");
+        }
     }
 } else {
     //jezeli nie ladzia
