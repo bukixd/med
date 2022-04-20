@@ -1,7 +1,9 @@
 <?php
+require_once('./model/Patient.class.php');
+require('./vendor/autoload.php');
+
 
 $db = new mysqli("localhost", "root", "", "med1");
-require_once("./libs/Smarty.class.php");
 $smarty = new Smarty();
 
 $smarty->setTemplateDir('./templates');
